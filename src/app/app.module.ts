@@ -11,9 +11,14 @@ import { PagesModule } from './pages/pages.module';
 import { IncrementadorComponent } from './components/incrementador/incrementador.component';
 import { FormsModule } from '@angular/forms';
 
+// Services
+import { ServiceModule } from './services/service.module';
+
+// Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +30,8 @@ import { RegisterComponent } from './login/register.component';
     BrowserModule,
     appRouting,
     PagesModule,
-    FormsModule
+    FormsModule,
+    ServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent]
