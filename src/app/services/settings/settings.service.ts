@@ -15,14 +15,9 @@ export class SettingsService {
     this.cargarAjustes();
   }
 
-  guardarAjustes() {
-    localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
-  }
-
   cargarAjustes() {
     if (localStorage.getItem('ajustes')) {
       this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
-
       this.aplicarTema(this.ajustes.tema);
     } else {
       this.aplicarTema(this.ajustes.tema);
@@ -38,6 +33,11 @@ export class SettingsService {
 
     this.guardarAjustes();
   }
+
+  guardarAjustes() {
+    localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
+  }
+
 }
 
 interface Ajustes {
