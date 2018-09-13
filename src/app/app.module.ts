@@ -9,7 +9,7 @@ import { PagesModule } from './pages/pages.module';
 
 // Temporal
 import { IncrementadorComponent } from './components/incrementador/incrementador.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Services
 import { ServiceModule } from './services/service.module';
@@ -31,6 +31,7 @@ import { RegisterComponent } from './login/register.component';
     appRouting,
     PagesModule,
     FormsModule,
+    ReactiveFormsModule,
     ServiceModule
   ],
   providers: [],
