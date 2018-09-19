@@ -9,6 +9,7 @@ import { URL_SERVICIOS } from '../../config/config';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { SubirArchivoService } from '../subirArchivos/subir-archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class UsuarioService {
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private _http: HttpClient, private router: Router) {
+  constructor(private _http: HttpClient,
+    private router: Router,
+    private _subirArchivoService: SubirArchivoService) {
     this.cargarLocalStorage();
    }
 
@@ -115,4 +118,44 @@ export class UsuarioService {
        })
      );
    }
+
+  // ==============================================================
+  // Actualizar usuario
+  // ==============================================================
+  actualizarUsuario(usuario: Usuario) {
+    let url = this.urlUsuario + '/' + usuario._id;
+    url += '?token=' + this.token;
+
+    return this._http.put(url, usuario, {headers: this.headers}).pipe(
+      map( (resp: any) => {
+        const usuarioDB = resp.usuario;
+        this.guardarLocalStorage(usuarioDB._id, this.token, usuarioDB);
+        swal('Usuario actualizado', usuario.nombre, 'success');
+        return true;
+      })
+    );
+  }
+
+
+
+  // ==============================================================
+  // Cambiar imagen (se conecta con el servicio de cambio de imagen)
+  // ==============================================================
+cambiarImagen( archivo: File, id: string) {
+  this._subirArchivoService.subirArchivo ( archivo, 'usuarios', id )
+  .then( (resp: any) => {
+    console.log(resp);
+    this.usuario.img = resp.usuarioActualizado.img;
+    swal('Imagen actualizada', this.usuario.nombre, 'success');
+    this.guardarLocalStorage(id, this.token, this.usuario);
+  })
+  .catch( resp => console.log(resp));
+}
+
+
+
+
+
+
+
 }
