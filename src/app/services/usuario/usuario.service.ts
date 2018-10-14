@@ -128,8 +128,14 @@ export class UsuarioService {
 
     return this._http.put(url, usuario, {headers: this.headers}).pipe(
       map( (resp: any) => {
-        const usuarioDB = resp.usuario;
-        this.guardarLocalStorage(usuarioDB._id, this.token, usuarioDB);
+
+        // Para guardar informaicón solo si el usuario que se actualiza
+        // es el mismo que está usando la app en el mismo dispositivo
+        if (usuario._id === this.usuario._id) {
+          const usuarioDB = resp.usuario;
+          this.guardarLocalStorage(usuarioDB._id, this.token, usuarioDB);
+        }
+
         swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
       })
@@ -153,9 +159,41 @@ cambiarImagen( archivo: File, id: string) {
 }
 
 
+  // ==============================================================
+  // Cargar usuarios
+  // ==============================================================
+cargarUsuarios(desde: number = 0) {
+  const url = URL_SERVICIOS + '/usuario?desde=' + desde;
 
+  return this._http.get(url, {headers: this.headers});
+}
 
+  // ==============================================================
+  // Buscar usuarios
+  // ==============================================================
+buscarUsuario(termino: String) {
+  const url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
 
+  return this._http.get(url, {headers: this.headers}).pipe(
+    map( (resp: any) => resp.usuarios)
+  );
+}
+
+  // ==============================================================
+  // Borrar usuarios
+  // ==============================================================
+borrarUsuario(id: string) {
+  let url = URL_SERVICIOS + '/usuario/' + id;
+  url += '?token=' + this.token;
+
+  return this._http.delete(url, {headers: this.headers}).pipe(
+    map( (resp) => {
+      swal('Usuario borrado', 'El usuario ha sido eliminado correctamente', 'success');
+      return true;
+    })
+  );
+
+}
 
 
 }

@@ -12,6 +12,8 @@ import {
   LoginGuardGuard
 } from './service.index';
 
+import { ModalUploadService } from '../components/modal-upload/modal-upload.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import {
     SharedService,
     UsuarioService,
     SubirArchivoService,
-    LoginGuardGuard
+    LoginGuardGuard,
+    ModalUploadService
 
   ],
   declarations: []
